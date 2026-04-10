@@ -1,0 +1,96 @@
+:root {
+    --primary: #2563eb;
+    --bg-light: #f8fafc;
+    --text-main: #1e293b;
+    --border: #e2e8f0;
+    --white: #ffffff;
+}
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 300px;
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    padding: 2rem;
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+
+#search-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+/* Results Content */
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+.results-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.grant-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: transform 0.1s;
+}
+
+.grant-card:hover {
+    border-color: var(--primary);
+}
+
+.grant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.amount-tag {
+    background: #dcfce7;
+    color: #166534;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
