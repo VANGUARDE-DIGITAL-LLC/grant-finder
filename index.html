@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrantStream | AI-Powered Opportunity Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <h2>GrantStream</h2>
+            <form id="preferences-form">
+                <section class="filter-group">
+                    <label for="min-amount">Minimum Funding</label>
+                    <input type="number" id="min-amount" placeholder="$1,000">
+                </section>
+
+                <section class="filter-group">
+                    <label>Funding Category</label>
+                    <select id="category">
+                        <option value="academic">Academic Excellence</option>
+                        <option value="sports">Athletics/Sports</option>
+                        <option value="need">Financial Need</option>
+                        <option value="stem">STEM Research</option>
+                    </select>
+                </section>
+
+                <section class="filter-group">
+                    <label>Opportunity Type</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="federal" checked> Federal</label>
+                        <label><input type="checkbox" value="private"> Private Foundation</label>
+                        <label><input type="checkbox" value="institutional"> Institutional</label>
+                    </div>
+                </section>
+
+                <button type="submit" id="search-btn">Search Opportunities</button>
+            </form>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Active Funding Feed</h1>
+                <p>AI agent scanning news feeds and databases...</p>
+            </header>
+
+            <div id="results-container" class="results-grid">
+                <div class="empty-state">Adjust filters and click search to begin.</div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
