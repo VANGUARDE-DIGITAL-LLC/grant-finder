@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GrantStream | AI-Powered Opportunity Search</title>
+    <title>GrantStream | Tourism & Community Grants</title>
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="app-container">
@@ -12,45 +14,47 @@
             <h2>GrantStream</h2>
             <form id="preferences-form">
                 <section class="filter-group">
-                    <label for="min-amount">Minimum Funding</label>
-                    <input type="number" id="min-amount" placeholder="$1,000">
+                    <label for="min-amount">Minimum Funded Amount</label>
+                    <input type="number" id="min-amount" placeholder="$5,000">
                 </section>
 
                 <section class="filter-group">
-                    <label>Funding Category</label>
+                    <label>Select Borough</label>
                     <select id="category">
-                        <option value="academic">Academic Excellence</option>
-                        <option value="sports">Athletics/Sports</option>
-                        <option value="need">Financial Need</option>
-                        <option value="stem">STEM Research</option>
+                        <option value="">All Boroughs</option>
+                        <option value="BROOKLYN">Brooklyn</option>
+                        <option value="MANHATTAN">Manhattan</option>
+                        <option value="QUEENS">Queens</option>
+                        <option value="BRONX">The Bronx</option>
+                        <option value="STATEN ISLAND">Staten Island</option>
                     </select>
                 </section>
 
                 <section class="filter-group">
-                    <label>Opportunity Type</label>
+                    <label>Fiscal Year</label>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" value="federal" checked> Federal</label>
-                        <label><input type="checkbox" value="private"> Private Foundation</label>
-                        <label><input type="checkbox" value="institutional"> Institutional</label>
+                        <label><input type="checkbox" value="21" checked> FY 2021</label>
+                        <label><input type="checkbox" value="20"> FY 2020</label>
+                        <label><input type="checkbox" value="19"> FY 2019</label>
                     </div>
                 </section>
 
-                <button type="submit" id="search-btn">Search Opportunities</button>
+                <button type="submit" id="search-btn">Search Tourism Grants</button>
             </form>
         </aside>
 
         <main class="main-content">
             <header class="content-header">
                 <h1>KYLANI'S Funding Feed</h1>
-                <p>AI agent scanning news feeds and databases...</p>
+                <p>Scanning NYC Tourism database for opportunities...</p>
             </header>
 
             <div id="results-container" class="results-grid">
-                <div class="empty-state">Adjust filters and click search to begin.</div>
+                <div class="empty-state">Select a borough and click search to view tourism funding.</div>
             </div>
         </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script src="script.js"></script>
 </body>
 </html>
