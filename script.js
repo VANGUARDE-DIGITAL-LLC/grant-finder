@@ -9,21 +9,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const categorySelect = document.getElementById('category');
     const minAmountInput = document.getElementById('min-amount');
 
-    // 2. THE FETCH FUNCTION (The "Backend" Logic)
+    // 2. THE FETCH FUNCTION
     const fetchGrants = async () => {
-        resultsContainer.innerHTML = '<p>AI Agent querying live database...</p>';
+        resultsContainer.innerHTML = '<p>AI Agent querying Tourism Database...</p>';
 
-        // Build the query
+        // Target the new table name: 'tourism_grants'
         let query = db
-            .from('grants')
+            .from('tourism_grants')
             .select('*');
 
         // Apply dynamic filters from the UI
+        // Note: The CSV uses 'borough' or 'project_title'. 
+        // We'll filter by 'borough' based on your category selection.
         if (categorySelect.value) {
-            query = query.ilike('category', `%${categorySelect.value}%`);
+            query = query.ilike('borough', `%${categorySelect.value}%`);
         }
+        
+        // CSV uses 'funded_amount' as the primary currency column
         if (minAmountInput.value) {
-            query = query.gte('amount', parseInt(minAmountInput.value));
+            query = query.gte('funded_amount', parseInt(minAmountInput.value));
         }
 
         const { data, error } = await query;
@@ -41,21 +45,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderResults = (data) => {
         resultsContainer.innerHTML = '';
         if (data.length === 0) {
-            resultsContainer.innerHTML = '<p>No opportunities found matching these filters.</p>';
+            resultsContainer.innerHTML = '<p>No tourism opportunities found matching these filters.</p>';
             return;
         }
 
         data.forEach(item => {
             const card = document.createElement('div');
             card.className = 'grant-card';
+            
+            // Mapping CSV headers to UI elements:
+            // project_title -> Title
+            // borough -> Category
+            // organization_name -> Source
+            // funded_amount -> Amount
             card.innerHTML = `
                 <div class="grant-header">
                     <div>
-                        <h3>${item.title}</h3>
-                        <small>Category: ${item.category} | Source: ${item.source}</small>
+                        <h3>${item.project_title}</h3>
+                        <small>Location: ${item.borough} | Organization: ${item.organization_name}</small>
                     </div>
-                    <span class="amount-tag">$${item.amount.toLocaleString()}</span>
+                    <span class="amount-tag">$${(item.funded_amount || 0).toLocaleString()}</span>
                 </div>
+                <p style="font-size: 0.85rem; margin-top: 10px; color: #64748b;">
+                    Fiscal Year: 20${item.fy} | Agency: ${item.agency}
+                </p>
             `;
             resultsContainer.appendChild(card);
         });
