@@ -1,7 +1,7 @@
 // 1. INITIALIZE SUPABASE
 const SUPABASE_URL = 'https://mnpomkifpkkifughwipe.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_cnp_y3U5vggSgDIRsIa5sg_6FcKU98H';
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 document.addEventListener('DOMContentLoaded', () => {
     const searchBtn = document.getElementById('search-btn');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.innerHTML = '<p>AI Agent querying Tourism Database...</p>';
 
         // Target the new table name: 'tourism_grants'
-        let query = db
+        let query = supabase
             .from('tourism_grants')
             .select('*');
 
