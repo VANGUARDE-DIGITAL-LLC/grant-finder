@@ -4,12 +4,56 @@ const SUPABASE_ANON_KEY = 'sb_publishable_cnp_y3U5vggSgDIRsIa5sg_6FcKU98H';
 // const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // NEW: NYC Open Data Endpoint
 const NYC_API_ENDPOINT = "https://data.cityofnewyork.us/resource/x4ud-jhxu.json";
+const APP_TOKEN = "K4CShHFvxEN3pKWcdK6bd7v2c"; // Get this from data.cityofnewyork.us
 
 document.addEventListener('DOMContentLoaded', () => {
     const searchBtn = document.getElementById('search-btn');
     const resultsContainer = document.getElementById('results-container');
     const categorySelect = document.getElementById('category');
     const minAmountInput = document.getElementById('min-amount');
+
+    const fetchGrants = async () => {
+        resultsContainer.innerHTML = '<p>AI Agent fetching live NYC Open Data...</p>';
+
+        const borough = categorySelect.value;
+        const minAmount = minAmountInput.value || 0;
+
+        // Construct the URL with Socrata Query Language (SoQL)
+        let url = `${NYC_API_ENDPOINT}?$where=funded_amount >= ${minAmount}`;
+        if (borough) {
+            url += ` AND borough='${borough}'`;
+        }
+
+        // --- THE HEADERS SECTION ---
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'X-App-Token': APP_TOKEN,
+                'Content-Type': 'application/json'
+            }
+        };
+
+        try {
+            // Pass requestOptions as the second argument to fetch
+            const response = await fetch(url, requestOptions);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            renderResults(data);
+            
+        } catch (error) {
+            console.error("API Error:", error);
+            resultsContainer.innerHTML = `<p>Error: ${error.message}. Check your App Token and network.</p>`;
+        }
+    };
+// document.addEventListener('DOMContentLoaded', () => {
+//     const searchBtn = document.getElementById('search-btn');
+//     const resultsContainer = document.getElementById('results-container');
+//     const categorySelect = document.getElementById('category');
+//     const minAmountInput = document.getElementById('min-amount');
 
     // // 2. THE FETCH FUNCTION
     // const fetchGrants = async () => {
