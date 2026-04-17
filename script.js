@@ -10,41 +10,54 @@ document.addEventListener('DOMContentLoaded', () => {
     const minAmountInput = document.getElementById('min-amount');
 
     // 2. THE FETCH FUNCTION
-    const fetchGrants = async () => {
-        resultsContainer.innerHTML = '<p>AI Agent fetching live NYC Open Data...</p>';
+const fetchGrants = async () => {
+    resultsContainer.innerHTML = '<p>AI Agent scanning NYC databases...</p>';
 
-        const borough = categorySelect.value;
-        const minAmount = minAmountInput.value || 0;
+    const boroughValue = categorySelect.value; // e.g., "BROOKLYN"
+    const minAmount = minAmountInput.value || 0;
 
-        // Construct the URL with Socrata Query Language (SoQL)
-        let url = `${NYC_API_ENDPOINT}?$where=funded_amount >= ${minAmount}`;
-        if (borough) {
-            url += ` AND borough='${borough}'`;
-        }
+    // 1. Build a more flexible query
+    // We use 'cascading' filters: if one fails, we can see why in the console
+    let url = `${NYC_API_ENDPOINT}?$where=funded_amount >= '${minAmount}'`;
+    
+    // 2. Address Case Sensitivity
+    // NYC Data often uses 'Brooklyn' instead of 'BROOKLYN'
+    if (boroughValue) {
+        const titleCaseBorough = boroughValue.charAt(0) + boroughValue.slice(1).toLowerCase();
+        url += ` AND (borough='${boroughValue}' OR borough='${titleCaseBorough}')`;
+    }
 
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'X-App-Token': APP_TOKEN,
-                'Content-Type': 'application/json'
-            }
-        };
+    // 3. Add a limit to ensure we get something back for testing
+    url += "&$limit=50";
 
-        try {
-            const response = await fetch(url, requestOptions);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+    console.log("Querying NYC API:", url); // Click this link in your Console to see raw data!
 
-            const data = await response.json();
-            renderResults(data);
-            
-        } catch (error) {
-            console.error("API Error:", error);
-            resultsContainer.innerHTML = `<p>Error: ${error.message}. Check your App Token and network.</p>`;
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            'X-App-Token': APP_TOKEN,
+            'Content-Type': 'application/json'
         }
     };
+
+    try {
+        const response = await fetch(url, requestOptions);
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("NYC API Error Detail:", errorData);
+            throw new Error(`NYC Data is temporarily unavailable (Status: ${response.status})`);
+        }
+
+        const data = await response.json();
+        console.log("Data Received:", data);
+        renderResults(data);
+        
+    } catch (error) {
+        console.error("API Error:", error);
+        resultsContainer.innerHTML = `<p style="color:red;">Error: ${error.message}.</p>`;
+    }
+};
 
     // 3. UI RENDERING FUNCTION
     const renderResults = (data) => {
