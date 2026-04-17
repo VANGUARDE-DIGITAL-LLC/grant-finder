@@ -2,8 +2,6 @@
 // const SUPABASE_URL = 'https://mnpomkifpkkifughwipe.supabase.co';
 // const SUPABASE_ANON_KEY = 'sb_publishable_cnp_y3U5vggSgDIRsIa5sg_6FcKU98H';
 // const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-// NEW: NYC Open Data Endpoint
-const NYC_API_ENDPOINT = "https://data.cityofnewyork.us/resource/x4ud-jhxu.json";
 
 const fetchGrants = async () => {
     resultsContainer.innerHTML = '<p>AI Agent fetching live NYC Open Data...</p>';
