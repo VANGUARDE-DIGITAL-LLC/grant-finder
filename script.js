@@ -1,7 +1,36 @@
 // 1. INITIALIZE SUPABASE
-const SUPABASE_URL = 'https://mnpomkifpkkifughwipe.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_cnp_y3U5vggSgDIRsIa5sg_6FcKU98H';
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// const SUPABASE_URL = 'https://mnpomkifpkkifughwipe.supabase.co';
+// const SUPABASE_ANON_KEY = 'sb_publishable_cnp_y3U5vggSgDIRsIa5sg_6FcKU98H';
+// const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// NEW: NYC Open Data Endpoint
+const NYC_API_ENDPOINT = "https://data.cityofnewyork.us/resource/x4ud-jhxu.json";
+
+const fetchGrants = async () => {
+    resultsContainer.innerHTML = '<p>AI Agent fetching live NYC Open Data...</p>';
+
+    const borough = categorySelect.value;
+    const minAmount = minAmountInput.value || 0;
+
+    // Build the Socrata Query (SoQL)
+    // $where clause handles the filtering logic
+    let url = `${NYC_API_ENDPOINT}?$where=funded_amount >= ${minAmount}`;
+    
+    if (borough) {
+        url += ` AND borough='${borough}'`;
+    }
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.error) throw new Error(data.message);
+        
+        renderResults(data);
+    } catch (error) {
+        console.error("API Error:", error);
+        resultsContainer.innerHTML = '<p>Error fetching live data. The NYC API might be throttled.</p>';
+    }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     const searchBtn = document.getElementById('search-btn');
