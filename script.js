@@ -87,32 +87,32 @@ document.addEventListener('DOMContentLoaded', () => {
     //     renderResults(data);
     // };
 
-    const fetchGrants = async () => {
-    resultsContainer.innerHTML = '<p>AI Agent fetching live NYC Open Data...</p>';
+//     const fetchGrants = async () => {
+//     resultsContainer.innerHTML = '<p>AI Agent fetching live NYC Open Data...</p>';
 
-    const borough = categorySelect.value;
-    const minAmount = minAmountInput.value || 0;
+//     const borough = categorySelect.value;
+//     const minAmount = minAmountInput.value || 0;
 
-    // Build the Socrata Query (SoQL)
-    // $where clause handles the filtering logic
-    let url = `${NYC_API_ENDPOINT}?$where=funded_amount >= ${minAmount}`;
+//     // Build the Socrata Query (SoQL)
+//     // $where clause handles the filtering logic
+//     let url = `${NYC_API_ENDPOINT}?$where=funded_amount >= ${minAmount}`;
     
-    if (borough) {
-        url += ` AND borough='${borough}'`;
-    }
+//     if (borough) {
+//         url += ` AND borough='${borough}'`;
+//     }
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
+//     try {
+//         const response = await fetch(url);
+//         const data = await response.json();
 
-        if (data.error) throw new Error(data.message);
+//         if (data.error) throw new Error(data.message);
         
-        renderResults(data);
-    } catch (error) {
-        console.error("API Error:", error);
-        resultsContainer.innerHTML = '<p>Error fetching live data. The NYC API might be throttled.</p>';
-    }
-};
+//         renderResults(data);
+//     } catch (error) {
+//         console.error("API Error:", error);
+//         resultsContainer.innerHTML = '<p>Error fetching live data. The NYC API might be throttled.</p>';
+//     }
+// };
 
 //     // 3. UI RENDERING
 //     const renderResults = (data) => {
